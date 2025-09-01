@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class FileTextReader {
 
     /**
-     * Método que lee un archivo de texto y devuelve su contenido en una lista de Strings.
+     * Método que lee un archivo de texto (codificación UTF-8) y devuelve su contenido en una lista de Strings.
      * @param path Ruta del archivo a leer.
      * @return Lista de cadenas con todas las líneas del archivo.
      */
