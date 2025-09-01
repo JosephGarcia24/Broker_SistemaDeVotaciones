@@ -20,7 +20,7 @@ public class FileTextReader {
     
     public static ArrayList<String> readFile(String path) {
         ArrayList<String> fileContent = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+        try (BufferedReader reader = reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"))) {
             
             String line;
             // Se lee línea por línea hasta que no haya más (readLine devuelve null al final del archivo)
