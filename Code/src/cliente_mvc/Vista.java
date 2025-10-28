@@ -4,10 +4,29 @@
  */
 package cliente_mvc;
 
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+
 /**
  *
- * @author elika
+ * @author joseph
  */
 public class Vista {
+    // En la construcción del menú:
+    private JMenuItem menuServiciosBroker;
+    private JMenuItem menuBitacoraServidor;
+
+    private void construirMenu() {
+      JMenu menu = new JMenu("Herramientas");
+      menuServiciosBroker = new JMenuItem("Servicios del Broker...");
+      menuBitacoraServidor = new JMenuItem("Bitácora (Servidor)...");
+      menu.add(menuServiciosBroker);
+      menu.add(menuBitacoraServidor);
+      // añade 'menu' a la barra de menús
+    }
+
+    public JMenuItem getMenuServiciosBroker() { return menuServiciosBroker; }
+    public JMenuItem getMenuBitacoraServidor() { return menuBitacoraServidor; }
+
     
 }

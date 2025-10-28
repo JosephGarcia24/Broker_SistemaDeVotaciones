@@ -105,7 +105,7 @@ public final class Controlador implements ActionListener {
      * Crea el panel principal, título, productos y botones de votación
      * Configura el scroll y la responsividad
      */
-    public void inicializarVista() {
+    public void iniciar() {
         Bitacora.registrar(this.getClass(), "inicializando vista");
 
         int cantidadProductos = modelo.obtenerNumeroProductos();
@@ -166,6 +166,15 @@ public final class Controlador implements ActionListener {
         });
 
         actualizarEspaciosResponsive();
+        
+        vista.getMenuServiciosBroker().addActionListener(e -> {
+        var snapshot = modelo.serviciosBroker();
+        new VistaServicios(vista, snapshot, () -> modelo.serviciosBroker()).setVisible(true);
+      });
+
+      vista.getMenuBitacoraServidor().addActionListener(e -> {
+        new VistaBitacora(vista, () -> modelo.bitacora()).setVisible(true);
+      });
     }
 
     // ============================================
