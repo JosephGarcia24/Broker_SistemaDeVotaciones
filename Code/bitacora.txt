@@ -1,0 +1,24 @@
+[2025-10-29 08:06:43] Vista | Inicializando vista
+[2025-10-29 08:06:43] Controlador | inicializando controlador
+[2025-10-29 08:06:43] Controlador | inicializando vista
+[2025-10-29 08:06:44] Vista | agregando listeners
+[2025-10-29 08:06:44] Vista | agregando listeners
+[2025-10-29 08:06:44] Vista | agregando listeners
+[2025-10-29 08:06:50] Controlador | realizando manejo de votos
+[2025-10-29 08:06:50] Vista | actualizando votos
+[2025-10-29 08:06:52] Controlador | realizando manejo de votos
+[2025-10-29 08:06:52] Vista | actualizando votos
+[2025-10-29 08:06:53] Controlador | realizando manejo de votos
+[2025-10-29 08:06:53] Vista | actualizando votos
+[2025-10-29 08:07:15] Controlador | realizando manejo de votos
+[2025-10-29 08:07:15] Vista | actualizando votos
+[2025-10-29 08:07:16] Controlador | realizando manejo de votos
+[2025-10-29 08:07:16] Vista | actualizando votos
+[2025-10-29 08:07:17] Controlador | realizando manejo de votos
+[2025-10-29 08:07:17] Vista | actualizando votos
+[2025-10-29 08:08:25] Controlador | realizando manejo de votos
+[2025-10-29 08:08:26] Vista | actualizando votos
+[2025-10-29 08:08:26] Controlador | realizando manejo de votos
+[2025-10-29 08:08:26] Vista | actualizando votos
+[2025-10-29 08:08:30] Controlador | realizando manejo de votos
+[2025-10-29 08:08:30] Vista | actualizando votos
