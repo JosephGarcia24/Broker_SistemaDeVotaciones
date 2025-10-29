@@ -109,6 +109,7 @@ public class Vista extends javax.swing.JFrame {
         // Crear menús principales
         this.menuArchivo = crearMenuMinimalista("Archivo");
         this.menuGraficos = crearMenuMinimalista("Gráficos");
+        construirMenu();
 
         // ============================================
         // CREACIÓN DE ITEMS DE MENÚ
