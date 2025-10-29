@@ -68,10 +68,32 @@ public class BrokerServer {
                     break;
                 }
                 case "ejecutar": {
-                    String destino = req.get("valor1").getAsString(); // p.ej. "votar"
+                    // 1) Leer el destino
+                    String destino = req.get("valor1").getAsString(); // p.ej. "votar", "contar", etc.
                     InetSocketAddress addr = registry.pick(destino);
                     if (addr == null) { resp = error("Servicio no disponible: " + destino); break; }
-                    resp = Forwarder.forward(addr, req);
+
+                    // 2) Construir una NUEVA solicitud para el servidor destino:
+                    //    - Cambiar "servicio" por el destino
+                    //    - Copiar todos los "valorN" EXCEPTO el valor1 (que era el 'destino')
+                    JsonObject fwd = new JsonObject();
+                    fwd.addProperty("servicio", destino);
+
+                    // Copiar pares valorN (y si quieres paramN) excepto N=1
+                    for (String key : req.keySet()) {
+                        if (key.startsWith("valor")) {
+                            try {
+                                int n = Integer.parseInt(key.substring("valor".length()));
+                                if (n == 1) continue; // saltar el destino
+                            } catch (NumberFormatException ignore) {}
+                            fwd.add(key, req.get(key));
+                        }
+                        // (Opcional) si te interesa conservar paramN (no los usa el server)
+                        // if (key.startsWith("param")) { ... }
+                    }
+
+                    // 3) Reenviar ya con el servicio correcto
+                    resp = Forwarder.forward(addr, fwd);
                     break;
                 }
                 default: resp = error("Servicio broker no soportado: " + servicio);
