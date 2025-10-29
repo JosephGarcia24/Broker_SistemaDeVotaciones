@@ -18,6 +18,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 /**
  * Controlador principal del sistema de votaciones
@@ -50,7 +51,7 @@ public final class Controlador implements ActionListener {
     // ============================================
     
     private final Vista vista;                  // Referencia a la vista
-    private final Modelo modelo;                // Referencia al modelo
+    private final ClienteModelo modelo;                // Referencia al modelo
     private JPanel panelPrincipal;              // Panel central con los productos
     
     // Referencias a las gráficas abiertas actualmente
@@ -67,12 +68,12 @@ public final class Controlador implements ActionListener {
      * @param vista referencia a la ventana principal
      * @param modelo referencia al modelo de datos
      */
-    public Controlador(Vista vista, Modelo modelo) {
+    public Controlador(Vista vista, ClienteModelo modelo) {
         Bitacora.registrar(this.getClass(), "inicializando controlador");
         this.vista = vista;
         this.modelo = modelo;
 
-        inicializarVista();
+        iniciar();
         registrarListeners();
     }
 
@@ -108,7 +109,7 @@ public final class Controlador implements ActionListener {
     public void iniciar() {
         Bitacora.registrar(this.getClass(), "inicializando vista");
 
-        int cantidadProductos = modelo.obtenerNumeroProductos();
+        int cantidadProductos = modelo.obtenerNombres().size();
         vista.botonesVotar = new JButton[cantidadProductos];
         vista.etiquetasVotos = new JLabel[cantidadProductos];
         vista.etiquetasProductos = new JLabel[cantidadProductos];
@@ -257,7 +258,7 @@ public final class Controlador implements ActionListener {
      * @return JPanel con la tarjeta del producto
      */
     private JPanel crearTarjetaProducto(int index) {
-        String nombre = toTitleCase(modelo.obtenerNombreProducto(index));
+        String nombre = toTitleCase(modelo.obtenerNombres().get(index));
         int numVotos = modelo.obtenerVotosProducto(index);
 
         // Crear panel con fondo personalizado (sombra y efecto de tarjeta)
@@ -468,15 +469,19 @@ public final class Controlador implements ActionListener {
      * Se ejecuta cada vez que hay un nuevo voto
      */
     private void actualizarGraficasAbiertas() {
-        int cantidad = modelo.obtenerNumeroProductos();
-        String[] nombreProductos = new String[cantidad];
+        // Obtener la lista de nombres desde el cliente (BrokerClient vía ClienteModelo)
+        List<String> nombres = modelo.obtenerNombres();
+        int cantidad = nombres.size();
+
+        // Crear arreglos para nombres y votos
+        String[] nombreProductos = nombres.toArray(new String[0]);
         int[] votos = new int[cantidad];
 
-        // Recopilar datos actualizados del modelo
+        // Recopilar datos actualizados del modelo remoto
         for (int i = 0; i < cantidad; i++) {
-            nombreProductos[i] = modelo.obtenerNombreProducto(i);
             votos[i] = modelo.obtenerVotosProducto(i);
         }
+
 
         // Actualizar gráfica de barras si está visible
         if (graficaBarrasActiva != null && graficaBarrasActiva.isVisible()) {
@@ -502,15 +507,17 @@ public final class Controlador implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Bitacora.registrar(this.getClass(), "invocando actionPerformed para botones del menú");
 
-        // Recopilar datos actualizados para las gráficas
-        int cantidad = modelo.obtenerNumeroProductos();
-        String[] nombreProductos = new String[cantidad];
+        // Recopilar datos actualizados para las gráficas desde el modelo remoto
+        List<String> nombres = modelo.obtenerNombres();
+        int cantidad = nombres.size();
+
+        String[] nombreProductos = nombres.toArray(new String[0]);
         int[] votos = new int[cantidad];
 
         for (int i = 0; i < cantidad; i++) {
-            nombreProductos[i] = modelo.obtenerNombreProducto(i);
             votos[i] = modelo.obtenerVotosProducto(i);
         }
+
 
         // Manejar clic en "Gráfica de Barras"
         if (e.getSource() == vista.itemGraficaBarras) {
@@ -533,10 +540,6 @@ public final class Controlador implements ActionListener {
                 graficaPastelActiva.toFront();
                 graficaPastelActiva.requestFocus();
             }
-        }
-        // Manejar clic en "Bitácora"
-        else if (e.getSource() == vista.itemBitacora) {
-            vista.mostrarBitacora();
         }
     }
 
