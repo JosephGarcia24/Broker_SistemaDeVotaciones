@@ -67,3 +67,86 @@
 [2025-10-29 08:30:48] Vista | actualizando votos
 [2025-10-29 08:31:41] Controlador | realizando manejo de votos
 [2025-10-29 08:31:41] Vista | actualizando votos
+[2025-10-29 08:40:13] Controlador | realizando manejo de votos
+[2025-10-29 08:40:13] Vista | actualizando votos
+[2025-10-29 08:48:34] Controlador | realizando manejo de votos
+[2025-10-29 08:48:34] Vista | actualizando votos
+[2025-10-29 08:49:17] Controlador | realizando manejo de votos
+[2025-10-29 08:49:17] Vista | actualizando votos
+[2025-10-29 08:49:19] Controlador | realizando manejo de votos
+[2025-10-29 08:49:19] Vista | actualizando votos
+[2025-10-29 08:49:20] Controlador | realizando manejo de votos
+[2025-10-29 08:49:20] Vista | actualizando votos
+[2025-10-29 08:49:21] Controlador | realizando manejo de votos
+[2025-10-29 08:49:21] Vista | actualizando votos
+[2025-10-29 08:49:22] Controlador | realizando manejo de votos
+[2025-10-29 08:49:22] Vista | actualizando votos
+[2025-10-29 08:49:23] Controlador | realizando manejo de votos
+[2025-10-29 08:49:23] Vista | actualizando votos
+[2025-10-29 09:09:33] Vista | Inicializando vista
+[2025-10-29 09:09:33] Controlador | inicializando controlador
+[2025-10-29 09:09:33] Controlador | inicializando vista
+[2025-10-29 09:09:33] Vista | agregando listeners
+[2025-10-29 09:09:33] Vista | agregando listeners
+[2025-10-29 09:09:33] Vista | agregando listeners
+[2025-10-29 09:09:33] Controlador | registrando listeners
+[2025-10-29 09:09:33] Controlador | inicializando vista
+[2025-10-29 09:09:33] Vista | agregando listeners
+[2025-10-29 09:09:33] Vista | agregando listeners
+[2025-10-29 09:09:33] Vista | agregando listeners
+[2025-10-29 09:09:36] Controlador | realizando manejo de votos
+[2025-10-29 09:09:36] Vista | actualizando votos
+[2025-10-29 09:09:38] Controlador | realizando manejo de votos
+[2025-10-29 09:09:38] Vista | actualizando votos
+[2025-10-29 09:09:40] Controlador | realizando manejo de votos
+[2025-10-29 09:09:40] Vista | actualizando votos
+[2025-10-29 09:09:46] Controlador | realizando manejo de votos
+[2025-10-29 09:09:46] Vista | actualizando votos
+[2025-10-29 09:09:48] Controlador | realizando manejo de votos
+[2025-10-29 09:09:48] Vista | actualizando votos
+[2025-10-29 09:09:49] Controlador | realizando manejo de votos
+[2025-10-29 09:09:49] Vista | actualizando votos
+[2025-10-29 09:09:50] Controlador | realizando manejo de votos
+[2025-10-29 09:09:50] Vista | actualizando votos
+[2025-10-29 09:10:19] Controlador | realizando manejo de votos
+[2025-10-29 09:10:19] Vista | actualizando votos
+[2025-10-29 09:10:19] Controlador | realizando manejo de votos
+[2025-10-29 09:10:19] Vista | actualizando votos
+[2025-10-29 09:10:24] Controlador | realizando manejo de votos
+[2025-10-29 09:10:24] Vista | actualizando votos
+[2025-10-29 09:10:26] Controlador | realizando manejo de votos
+[2025-10-29 09:10:26] Vista | actualizando votos
+[2025-10-29 09:10:27] Controlador | realizando manejo de votos
+[2025-10-29 09:10:27] Vista | actualizando votos
+[2025-10-29 09:10:28] Controlador | realizando manejo de votos
+[2025-10-29 09:10:28] Vista | actualizando votos
+[2025-10-29 09:10:28] Controlador | realizando manejo de votos
+[2025-10-29 09:10:28] Vista | actualizando votos
+[2025-10-29 09:10:28] Controlador | realizando manejo de votos
+[2025-10-29 09:10:28] Vista | actualizando votos
+[2025-10-29 09:10:29] Controlador | realizando manejo de votos
+[2025-10-29 09:10:29] Vista | actualizando votos
+[2025-10-29 09:10:29] Controlador | realizando manejo de votos
+[2025-10-29 09:10:29] Vista | actualizando votos
+[2025-10-29 09:10:29] Controlador | realizando manejo de votos
+[2025-10-29 09:10:29] Vista | actualizando votos
+[2025-10-29 09:10:29] Controlador | realizando manejo de votos
+[2025-10-29 09:10:29] Vista | actualizando votos
+[2025-10-29 09:10:29] Controlador | realizando manejo de votos
+[2025-10-29 09:10:29] Vista | actualizando votos
+[2025-10-29 09:10:30] Controlador | realizando manejo de votos
+[2025-10-29 09:10:30] Vista | actualizando votos
+[2025-10-29 09:10:30] Controlador | realizando manejo de votos
+[2025-10-29 09:10:30] Vista | actualizando votos
+[2025-10-29 09:10:32] Controlador | invocando actionPerformed para botones del menú
+[2025-10-29 09:10:33] Controlador | invocando actionPerformed para botones del menú
+[2025-10-29 09:10:33] GraficaBarras | Creando gráfica de barras
+[2025-10-29 09:10:33] GraficaBarras | Inicializando gráfica de barras
+[2025-10-29 09:10:41] Controlador | realizando manejo de votos
+[2025-10-29 09:10:41] Vista | actualizando votos
+[2025-10-29 09:10:42] Controlador | realizando manejo de votos
+[2025-10-29 09:10:42] Vista | actualizando votos
+[2025-10-29 09:10:46] Controlador | realizando manejo de votos
+[2025-10-29 09:10:46] Vista | actualizando votos
+[2025-10-29 09:10:47] Controlador | realizando manejo de votos
+[2025-10-29 09:10:47] Vista | actualizando votos

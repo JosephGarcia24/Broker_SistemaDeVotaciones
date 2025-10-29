@@ -4,11 +4,6 @@
  */
 package cliente_mvc;
 
-/**
- *
- * @author joseph
- */
-
 import cliente_mvc.GraficaBarras;
 import cliente_mvc.GraficaPastel;
 import cliente_mvc.VistaBitacora;
@@ -31,73 +26,78 @@ import javax.swing.SwingUtilities;
 import servidor_Votos.Bitacora;
 
 /**
- *
- * @author joseph
+ * Vista principal del cliente (UI)
  */
 public class Vista extends javax.swing.JFrame {
 
-    // ============================================
-    // LOGGER Y ATRIBUTOS PÚBLICOS
-    // ============================================
-    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Vista.class.getName());
-    
-    // Arreglos públicos para almacenar referencias a componentes de UI
+
+    // Componentes públicos que el controlador usa
     public JButton[] botonesVotar;              // Botones para votar por cada producto
     public JLabel[] etiquetasVotos;             // Etiquetas que muestran cantidad de votos
     public JLabel[] etiquetasProductos;         // Etiquetas con nombres de productos
-    
-    // ============================================
-    // ATRIBUTOS PRIVADOS
-    // ============================================
-    
+
+    // Componentes privados
     private JButton botonGrafica;
     private GraficaBarras vistaGraficaBarras;
     private JPanel panelContenido;
-    
-    // ============================================
-    // COMPONENTES DEL MENÚ
-    // ============================================
-    
-    public JMenuBar menuBar;                    // Barra de menú principal
-    public JMenu menuArchivo;                   // Menú "Archivo"
-    public JMenu menuGraficos;                  // Menú "Gráficos"
-    public JMenuItem itemBitacora;              // Opción para abrir Bitácora
-    public JMenuItem itemGraficaBarras;         // Opción para mostrar gráfica de barras
-    public JMenuItem itemGraficaPastel;         // Opción para mostrar gráfica de pastel
 
-    // ============================================
-    // CONSTRUCTOR
-    // ============================================
-    
+    // Barra de menú y elementos
+    public JMenuBar menuBar;
+    public JMenu menuArchivo;
+    public JMenu menuGraficos;
+    public JMenuItem itemBitacora;
+    public JMenuItem itemGraficaBarras;
+    public JMenuItem itemGraficaPastel;
+
+    // Items específicos (herramientas)
+    private JMenuItem menuServiciosBroker;
+    private JMenuItem menuBitacoraServidor;
+
     /**
-     * Crea la ventana principal del sistema de votaciones
-     * Inicializa la barra de menú con estilos personalizados
+     * Constructor
      */
     public Vista() {
         Bitacora.registrar(this.getClass(), "Inicializando vista");
         setTitle("Sistema de Votaciones");
         setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        setSize(900, 600);
+        setLocationRelativeTo(null);
 
-        // ============================================
-        // CREACIÓN DE MENUBAR PERSONALIZADO
-        // ============================================
-        
+        // Panel principal de contenido
+        panelContenido = new JPanel();
+        panelContenido.setLayout(new java.awt.BorderLayout());
+        getContentPane().add(panelContenido, java.awt.BorderLayout.CENTER);
+
+        // Botón de ejemplo para abrir gráfica (puede usarse desde controlador también)
+        botonGrafica = new JButton("Mostrar gráfica");
+        // lo colocamos al sur por defecto
+        getContentPane().add(botonGrafica, java.awt.BorderLayout.SOUTH);
+
+        // Inicializar la barra de menú personalizada
+        initMenuBar();
+
+        // Inicializar arrays vacíos (evita NPE si controlador pregunta antes de poblar)
+        botonesVotar = new JButton[0];
+        etiquetasVotos = new JLabel[0];
+        etiquetasProductos = new JLabel[0];
+    }
+
+    // ===========================
+    // Menú y componentes
+    // ===========================
+    private void initMenuBar() {
         this.menuBar = new JMenuBar() {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-                // Aplicar gradiente oscuro como fondo de la barra de menú
                 GradientPaint gp = new GradientPaint(
                     0, 0, new Color(50, 50, 50),
                     0, getHeight(), new Color(35, 35, 35)
                 );
                 g2d.setPaint(gp);
                 g2d.fillRect(0, 0, getWidth(), getHeight());
-
-                // Dibujar línea decorativa púrpura en la parte inferior
                 g2d.setColor(new Color(106, 64, 166, 100));
                 g2d.setStroke(new BasicStroke(2));
                 g2d.drawLine(0, getHeight() - 1, getWidth(), getHeight() - 1);
@@ -106,41 +106,31 @@ public class Vista extends javax.swing.JFrame {
         menuBar.setOpaque(false);
         menuBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
-        // Crear menús principales
+        // Menús principales
         this.menuArchivo = crearMenuMinimalista("Archivo");
         this.menuGraficos = crearMenuMinimalista("Gráficos");
-        construirMenu();
 
-        // ============================================
-        // CREACIÓN DE ITEMS DE MENÚ
-        // ============================================
-        
+        // Items de los menús principales
         this.itemBitacora = crearMenuItemMinimalista("Bitácora");
         this.itemGraficaBarras = crearMenuItemMinimalista("Gráfica de Barras");
         this.itemGraficaPastel = crearMenuItemMinimalista("Gráfica de Pastel");
 
-        // Agregar items a sus menús respectivos
+        // Añadir items a sus menús
         this.menuArchivo.add(itemBitacora);
         this.menuGraficos.add(itemGraficaBarras);
         this.menuGraficos.add(itemGraficaPastel);
 
-        // Agregar menús a la barra de menú
+        // Menú 'Herramientas' (servicios / bitácora remota)
+        construirMenuHerramientas();
+
+        // Añadir menús a la barra de menú
         this.menuBar.add(menuArchivo);
         this.menuBar.add(menuGraficos);
 
+        // Finalmente fija la barra
         this.setJMenuBar(menuBar);
     }
 
-    // ============================================
-    // CREACIÓN DE COMPONENTES DE MENÚ
-    // ============================================
-    
-    /**
-     * Crea un menú con estilo minimalista personalizado
-     * Incluye efecto de cambio de color al pasar el mouse (hover)
-     * @param texto nombre del menú a mostrar
-     * @return JMenu configurado con estilos personalizados
-     */
     private JMenu crearMenuMinimalista(String texto) {
         JMenu menu = new JMenu(texto);
         menu.setFont(new Font("Poppins", Font.BOLD, 14));
@@ -148,15 +138,12 @@ public class Vista extends javax.swing.JFrame {
         menu.setBackground(new Color(45, 45, 45));
         menu.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
         menu.setOpaque(false);
-        
-        // Agregar listener para cambio de color al activarse (armed state)
+
         menu.addPropertyChangeListener("armed", e -> {
             if ((boolean) e.getNewValue()) {
-                // Cuando se activa: mostrar fondo morado vibrante
                 menu.setBackground(new Color(180, 100, 230));
                 menu.setOpaque(true);
             } else {
-                // Cuando se desactiva: volver a fondo transparente
                 menu.setOpaque(false);
             }
         });
@@ -164,12 +151,6 @@ public class Vista extends javax.swing.JFrame {
         return menu;
     }
 
-    /**
-     * Crea un item de menú con estilo minimalista personalizado
-     * Incluye efecto de cambio de color al pasar el mouse (hover)
-     * @param texto texto del item a mostrar
-     * @return JMenuItem configurado con estilos personalizados
-     */
     private JMenuItem crearMenuItemMinimalista(String texto) {
         JMenuItem item = new JMenuItem(texto);
         item.setFont(new Font("Poppins", Font.PLAIN, 13));
@@ -178,13 +159,10 @@ public class Vista extends javax.swing.JFrame {
         item.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
         item.setOpaque(true);
 
-        // Agregar listener para cambio de color al activarse (armed state)
         item.addPropertyChangeListener("armed", e -> {
             if ((boolean) e.getNewValue()) {
-                // Cuando se activa: mostrar fondo morado puro
                 item.setBackground(new Color(180, 100, 230));
             } else {
-                // Cuando se desactiva: volver a fondo gris oscuro
                 item.setBackground(new Color(55, 55, 55));
             }
         });
@@ -192,75 +170,33 @@ public class Vista extends javax.swing.JFrame {
         return item;
     }
 
-    // ============================================
-    // MÉTODOS DE GESTIÓN DE PANEL
-    // ============================================
-    
     /**
-     * Reemplaza el contenido del panel principal con un nuevo panel
-     * @param panel el nuevo panel a mostrar
+     * Construye el menú "Herramientas" con los items que el Controlador espera
      */
-    public void setPanelPrincipal(JPanel panel) {
-        panelContenido.removeAll();
-        panelContenido.add(panel);
-        panelContenido.revalidate();
-        panelContenido.repaint();
+    private void construirMenuHerramientas() {
+        JMenu menu = crearMenuMinimalista("Herramientas");
+
+        // Inicializar aquí para que getMenu... no devuelva null
+        menuServiciosBroker = new JMenuItem("Servicios del Broker...");
+        menuBitacoraServidor = new JMenuItem("Bitácora (Servidor)...");
+
+        // Estilizar brevemente (o puedes usar crearMenuItemMinimalista)
+        menuServiciosBroker.setFont(new Font("Poppins", Font.PLAIN, 13));
+        menuBitacoraServidor.setFont(new Font("Poppins", Font.PLAIN, 13));
+
+        // Añadir al menú
+        menu.add(menuServiciosBroker);
+        menu.add(menuBitacoraServidor);
+
+        // Añadir el menú de herramientas a la barra
+        this.menuBar.add(menu);
     }
 
-    // ============================================
-    // MÉTODOS DE ACCESO A COMPONENTES
-    // ============================================
-    
-    /**
-     * Obtiene el botón de votación para un producto específico
-     * @param indiceProducto índice del producto
-     * @return JButton del producto, o null si el índice es inválido
-     */
-    public JButton obtenerBotonProducto(int indiceProducto) {
-        Bitacora.registrar(this.getClass(), "Obteniendo botón del producto");
-        if (indiceProducto >= 0 && indiceProducto < botonesVotar.length)
-            return botonesVotar[indiceProducto];
-
-        return null;
-    }
-
-    /**
-     * Actualiza el nombre mostrado de un producto
-     * @param indiceProducto índice del producto a actualizar
-     * @param nomProducto nuevo nombre del producto
-     */
-    public void actualizarNomProducto(int indiceProducto, String nomProducto) {
-        Bitacora.registrar(this.getClass(), "actualizando nombre del producto");
-        if (indiceProducto >= 0 && indiceProducto < etiquetasProductos.length)
-            etiquetasProductos[indiceProducto].setText(nomProducto);
-    }
-
-    /**
-     * Actualiza la cantidad de votos mostrada para un producto
-     * @param indiceProducto índice del producto
-     * @param numVotos nueva cantidad de votos
-     */
-    public void actualizarVotos(int indiceProducto, int numVotos) {
-        Bitacora.registrar(this.getClass(), "actualizando votos");
-        if (indiceProducto >= 0 && indiceProducto < etiquetasVotos.length)
-            etiquetasVotos[indiceProducto].setText(numVotos + " votos");
-    }
-
-    // ============================================
-    // MÉTODOS DE LISTENERS
-    // ============================================
-    
-    /**
-     * Agrega un listener (manejador de eventos) a un botón de votación
-     * @param indiceProducto índice del producto
-     * @param listener el ActionListener a agregar
-     */
-    public void agregarListenerBotonVoto(int indiceProducto, ActionListener listener) {
-        Bitacora.registrar(this.getClass(), "agregando listeners");
-        if (indiceProducto >= 0 && indiceProducto < botonesVotar.length) {
-            botonesVotar[indiceProducto].addActionListener(listener);
-        }
-    }
+    // ===========================
+    // Métodos de acceso (getters) para el controlador
+    // ===========================
+    public JMenuItem getMenuServiciosBroker() { return menuServiciosBroker; }
+    public JMenuItem getMenuBitacoraServidor() { return menuBitacoraServidor; }
 
     /**
      * Obtiene el botón para mostrar la gráfica de barras
@@ -271,75 +207,45 @@ public class Vista extends javax.swing.JFrame {
         return botonGrafica;
     }
 
-    /**
-     * Agrega un listener al botón de gráfica de barras
-     * @param listener el ActionListener a agregar
-     */
     public void agregarListenerBotonGraficaBarras(ActionListener listener) {
-        botonGrafica.addActionListener(listener);
+        if (botonGrafica != null) botonGrafica.addActionListener(listener);
     }
 
-    // ============================================
-    // MÉTODOS PARA MOSTRAR GRÁFICAS
-    // ============================================
-    
     /**
-     * Muestra una ventana con la gráfica de barras
-     * @param productos arreglo de nombres de productos
-     * @param votos arreglo de cantidades de votos
+     * Agregar listener a un botón de voto (el controlador debe llamar a este método)
      */
+    public void agregarListenerBotonVoto(int indiceProducto, ActionListener listener) {
+        Bitacora.registrar(this.getClass(), "agregando listeners");
+        if (indiceProducto >= 0 && indiceProducto < botonesVotar.length) {
+            botonesVotar[indiceProducto].addActionListener(listener);
+        }
+    }
+
+    // Métodos para actualizar UI desde el controlador
+    public void actualizarNomProducto(int indiceProducto, String nomProducto) {
+        Bitacora.registrar(this.getClass(), "actualizando nombre del producto");
+        if (etiquetasProductos != null && indiceProducto >= 0 && indiceProducto < etiquetasProductos.length)
+            etiquetasProductos[indiceProducto].setText(nomProducto);
+    }
+
+    public void actualizarVotos(int indiceProducto, int numVotos) {
+        Bitacora.registrar(this.getClass(), "actualizando votos");
+        if (etiquetasVotos != null && indiceProducto >= 0 && indiceProducto < etiquetasVotos.length)
+            etiquetasVotos[indiceProducto].setText(numVotos + " votos");
+    }
+
+    public GraficaBarras obtenerVistaGraficaBarras() {
+        Bitacora.registrar(this.getClass(), "obteniendo grafica de barras");
+        return vistaGraficaBarras;
+    }
+
     public void mostrarGraficaBarras(String[] productos, int[] votos) {
         Bitacora.registrar(this.getClass(), "mostrando grafica de barras");
         SwingUtilities.invokeLater(() -> new GraficaBarras(productos, votos));
     }
 
-    /**
-     * Muestra una ventana con la gráfica de pastel
-     * @param productos arreglo de nombres de productos
-     * @param votos arreglo de cantidades de votos
-     */
     public void mostrarGraficaPastel(String[] productos, int[] votos) {
         Bitacora.registrar(this.getClass(), "mostrando grafica de pastel");
         SwingUtilities.invokeLater(() -> new GraficaPastel(productos, votos));
     }
-
-    // ============================================
-    // MÉTODO PARA MOSTRAR BITÁCORA
-    // ============================================
-    
-    /**
-     * Muestra la ventana de Bitácora en el hilo de eventos de Swing
-     */
-
-
-    // ============================================
-    // MÉTODOS DE ACCESO A GRÁFICAS
-    // ============================================
-    
-    /**
-     * Obtiene la referencia a la vista de gráfica de barras activa
-     * @return GraficaBarras o null si no está disponible
-     */
-    public GraficaBarras obtenerVistaGraficaBarras() {
-        Bitacora.registrar(this.getClass(), "obteniendo grafica de barras");
-        return vistaGraficaBarras;
-    }
-    
-    
-    // En la construcción del menú:
-    private JMenuItem menuServiciosBroker;
-    private JMenuItem menuBitacoraServidor;
-
-    private void construirMenu() {
-      JMenu menu = new JMenu("Herramientas");
-      menuServiciosBroker = new JMenuItem("Servicios del Broker...");
-      menuBitacoraServidor = new JMenuItem("Bitácora (Servidor)...");
-      menu.add(menuServiciosBroker);
-      menu.add(menuBitacoraServidor);
-      // añade 'menu' a la barra de menús
-    }
-
-    public JMenuItem getMenuServiciosBroker() { return menuServiciosBroker; }
-    public JMenuItem getMenuBitacoraServidor() { return menuBitacoraServidor; }
-
 }
