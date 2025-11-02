@@ -5,9 +5,9 @@
 package cliente_mvc;
 
 /**
- *
- * @author elika
- */
+*
+* @author elika
+*/
 import servidor_Votos.Bitacora;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;

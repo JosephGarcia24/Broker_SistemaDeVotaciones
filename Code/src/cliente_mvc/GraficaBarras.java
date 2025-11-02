@@ -31,7 +31,7 @@ public class GraficaBarras extends JFrame {
     
     private final String[] productos;
     private final int[] votos;
-    private ChartPanel chartPanel;
+    private final ChartPanel chartPanel;
     private DefaultCategoryDataset dataset;
     private JFreeChart chart;
 
